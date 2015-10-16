@@ -73,3 +73,55 @@ img {
  * YOUR CODE HERE
  */
 
+
+#artistsongtitle{
+    border: 1px solid black;
+    /*display: inline-block;*/
+    width: 150px;
+
+    p{
+        margin: 0 auto;
+        text-indent: 0;
+        text-align: center;
+    }
+
+}
+
+#playedloved{
+    border: 1px solid black;
+    display: inline-block;
+    width: 150px;
+
+    div{
+        display: inline-block;
+    }
+}
+
+
+#sccontrols{
+
+    div{
+        border: 1px solid black;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+    }
+
+    #replay{
+        background-color: thistle;
+        color: slateblue;
+    }
+
+    #playpause{
+        background-color: rebeccapurple;
+        color: lemonchiffon;
+    }
+
+    #volume{
+        background-color: peachpuff;
+        color: slateblue;
+    }
+
+}
+
+

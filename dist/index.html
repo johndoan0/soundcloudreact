@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <title></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" type="text/css" href="./style.css">
-</head>
-
-<body>
-    <div class="container"></div>
+    <title>Connect with SoundCloud</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <script>
+		SC.initialize({
+		  client_id: '7e1122ad9a135f955afdfc49a9499ead',
+		  redirect_uri: './callback.html'
+		});
+	</script>
     <script type="text/javascript" src="./app-browserify.js"></script>
-</body>
+  </body>
 </html>

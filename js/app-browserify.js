@@ -1,7 +1,28 @@
 // es5 and 6 polyfills, powered by babel
 require("babel/polyfill")
 
+var $ = require('jQuery'),
+	Backbone = require('backbone'),
+	React = require('react'), 
+	SC = require('soundcloud')
+
 let fetch = require('./fetcher')
+
+console.log('javascript loaded')
+
+
+SC.initialize({
+  client_id: '7e1122ad9a135f955afdfc49a9499ead',
+  redirect_uri: './callback.html'
+});
+
+var SCGetObj = SC.get('/tracks', {q: 'trap music'}).then(function(tracks){
+	return (React.render(<SCPlayerView tracksObj={tracks}/>, document.querySelector("#container")))
+})
+
+
+// console.log(SCGetObj)
+
 
 // other stuff that we don't really use in our own code
 // var Pace = require("../bower_components/pace/pace.js")
@@ -15,4 +36,137 @@ let fetch = require('./fetcher')
     // start app
     // new Router()
 // }
+
+var SCPlayerView = React.createClass({
+	render: function(){
+		console.log(this.props.tracksObj)
+		//<Scrubber />
+		// <SCControls />
+				// <PlayedLoved />
+				// <ArtistSongTitle />
+
+
+		var sInfo = this.props.tracksObj
+		return(
+			<div id="scplayerview">
+				<SongInfo songInfo={sInfo}/>
+			</div>
+			)
+	}
+})
+
+var SongInfo = React.createClass({
+
+	_singleImage: function(singleInfo){
+		var artwork = singleInfo.artwork_url
+		// console.log(artwork)
+		
+		return(
+			<img src={artwork} />
+		)
+	},
+
+	_singleFavCount: function(singleInfo){
+		var favCount = singleInfo.favoritings_count
+
+		return(
+			<p>Favorited {favCount} times</p>
+		)
+	},
+
+	_singlePlayedCount: function(singleInfo){
+		
+		return(
+			<p>{playCount}</p>
+		)
+	},
+
+	_singleArtist: function(singleInfo){
+		
+		return(
+			<p>{artist}</p>
+		)
+	},
+
+	render: function(){
+		console.log(this.props.songInfo)
+		var songInfoArr = this.props.songInfo,
+			self = this
+
+		return(
+			<div className="songmetadata">
+				{songInfoArr.map(self._singleImage)}
+				{songInfoArr.map(self._singleFavCount)}
+			</div>
+			
+		)
+	}
+
+})
+
+var PlayedLoved = React.createClass({
+	render: function(){
+		//pass api request into playedloved
+		return(
+			<div id="playedloved">
+				<div id="played">played</div>
+				<div id="loved">loved</div>
+			</div>
+
+		)
+	}
+})
+
+var ArtistSongTitle = React.createClass({
+	render: function(){
+		//artist and song title to be pulled from api passed into AST this.props.w/e
+		return(
+			<div id="artistsongtitle">
+				<p id="artist">artist</p>
+				<p id="songtitle">song title</p>
+			</div>
+		)
+	}
+})
+
+var SCControls = React.createClass({
+	
+	getInitialState: function(){
+		return {
+			playpause: 'play',
+			replay: 'R',
+			volume: '2'
+		}
+	},
+
+	_playPauseClick: function(e){
+		// console.log('click playpause')
+		this.setState({playpause: 'pause'})
+		if(this.state.playpause === 'pause') this.setState({playpause: 'play'})
+	},
+
+	_replayClick: function(){
+		this.setState({replay: 'X'})
+		if(this.state.replay === 'X') this.setState({replay: 'R'})
+	},
+
+	_volumeClick: function(){
+		if(this.state.volume === '0') this.setState({volume: '1'})
+		else if(this.state.volume === '1') this.setState({volume: '2'})	
+		else if(this.state.volume === '2') this.setState({volume: '3'})
+		else if(this.state.volume === '3') this.setState({volume: '4'})
+		else if(this.state.volume === '4') this.setState({volume: '0'})
+	},
+
+	render: function(){
+		return(
+			<div id="sccontrols">
+				<div onClick={this._replayClick} id="replay">{this.state.replay}</div>
+				<div onClick={this._playPauseClick} id="playpause">{this.state.playpause}</div>
+				<div onClick={this._volumeClick} id="volume">{this.state.volume}</div>
+			</div>
+		)
+	}
+})
+
 
