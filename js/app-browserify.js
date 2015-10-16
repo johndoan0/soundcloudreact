@@ -39,7 +39,7 @@ var SCGetObj = SC.get('/tracks', {q: 'trap music'}).then(function(tracks){
 
 var SCPlayerView = React.createClass({
 	render: function(){
-		console.log(this.props.tracksObj)
+		// console.log(this.props.tracksObj)
 		//<Scrubber />
 		// <SCControls />
 				// <PlayedLoved />
@@ -57,34 +57,25 @@ var SCPlayerView = React.createClass({
 
 var SongInfo = React.createClass({
 
-	_singleImage: function(singleInfo){
+	_metaData: function(singleInfo){
+		var songTitle = singleInfo.title.substr(0,20) + "..."
 		var artwork = singleInfo.artwork_url
+		var favCount = singleInfo.favoritings_count
+		var playCount = singleInfo.playback_count
+		var artist = singleInfo.user.username
 		// console.log(artwork)
 		
 		return(
-			<img src={artwork} />
-		)
-	},
+			<div className="metadata">
+				<img src={artwork} />
+				<div className="textmetadata">
+					<p>Song: {songTitle}</p>
+					<p>Artist: {artist}</p>
+					<p>Favorited {favCount} times</p>
+					<p>Played {playCount} times</p>
+				</div>		
+			</div>
 
-	_singleFavCount: function(singleInfo){
-		var favCount = singleInfo.favoritings_count
-
-		return(
-			<p>Favorited {favCount} times</p>
-		)
-	},
-
-	_singlePlayedCount: function(singleInfo){
-		
-		return(
-			<p>{playCount}</p>
-		)
-	},
-
-	_singleArtist: function(singleInfo){
-		
-		return(
-			<p>{artist}</p>
 		)
 	},
 
@@ -94,9 +85,8 @@ var SongInfo = React.createClass({
 			self = this
 
 		return(
-			<div className="songmetadata">
-				{songInfoArr.map(self._singleImage)}
-				{songInfoArr.map(self._singleFavCount)}
+			<div className="listtracks">
+				{songInfoArr.map(self._metaData)}
 			</div>
 			
 		)
@@ -104,6 +94,11 @@ var SongInfo = React.createClass({
 
 })
 
+
+
+
+
+//////////////////////////   old
 var PlayedLoved = React.createClass({
 	render: function(){
 		//pass api request into playedloved

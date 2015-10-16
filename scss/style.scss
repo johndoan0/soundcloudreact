@@ -74,9 +74,35 @@ img {
  */
 
 
-#artistsongtitle{
+.metadata{
+
+    border: 1px solid rebeccapurple;
+    margin: 2%;
+
+    img{
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .textmetadata{
+        display: inline-block;
+
+
+        p{
+        display: inline-block;
+    }
+}
+
+    
+
+    
+
+}
+
+
+/*#artistsongtitle{
     border: 1px solid black;
-    /*display: inline-block;*/
+    display: inline-block;
     width: 150px;
 
     p{
@@ -123,5 +149,5 @@ img {
     }
 
 }
-
+*/
 
