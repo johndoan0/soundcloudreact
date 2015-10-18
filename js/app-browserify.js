@@ -10,7 +10,7 @@ let fetch = require('./fetcher')
 
 console.log('javascript loaded')
 
-
+// ==== Fetch/API request
 SC.initialize({
   client_id: '7e1122ad9a135f955afdfc49a9499ead',
   redirect_uri: './callback.html'
@@ -20,23 +20,10 @@ var SCGetObj = SC.get('/tracks', {q: 'trap music'}).then(function(tracks){
 	return (React.render(<SCPlayerView tracksObj={tracks}/>, document.querySelector("#container")))
 })
 
-
 // console.log(SCGetObj)
 
 
-// other stuff that we don't really use in our own code
-// var Pace = require("../bower_components/pace/pace.js")
-
-// require your own libraries, too!
-// var Router = require('./app.js')
-
-// window.addEventListener('load', app)
-
-// function app() {
-    // start app
-    // new Router()
-// }
-
+// ==== VIEW
 var SCPlayerView = React.createClass({
 	render: function(){
 		// console.log(this.props.tracksObj)
@@ -44,26 +31,58 @@ var SCPlayerView = React.createClass({
 		// <SCControls />
 				// <PlayedLoved />
 				// <ArtistSongTitle />
-
-
 		var sInfo = this.props.tracksObj
 		return(
 			<div id="scplayerview">
 				<SongInfo songInfo={sInfo}/>
 			</div>
-			)
+		)
 	}
 })
 
+// ==== BUTTON CONTROLS FOR EACH SONG
+var SongControls = React.createClass({
+	getInitialState: function(){
+		return {playpause: 'Play',
+				volume: '2'}
+	},
+
+	_playPauseClick: function(e){
+		this.setState({playpause: 'Pause'})
+		if(this.state.playpause === 'Pause') this.setState({playpause: 'Play'})
+	},
+
+	_volumeClick: function(e){
+		if(this.state.volume === 'Mute') this.setState({volume: '1'})
+		else if(this.state.volume === '1') this.setState({volume: '2'})	
+		else if(this.state.volume === '2') this.setState({volume: '3'})
+		else if(this.state.volume === '3') this.setState({volume: '4'})
+		else if(this.state.volume === '4') this.setState({volume: 'Mute'})
+	},
+
+	render: function(){
+		console.log('info in the SongControls component', this.props.tracks)
+		return(
+			<div className="songcontrols">
+				<button className="replay" type="button">Replay</button>
+				<button className="playpause" type="button" onClick={this._playPauseClick}>{this.state.playpause}</button>
+				<button className="volume" type="button" onClick={this._volumeClick}>Volume {this.state.volume}</button>
+			</div>	
+		)
+	},
+})
+
+
+// ==== SINGLE SONG METADATA
 var SongInfo = React.createClass({
 
 	_metaData: function(singleInfo){
-		var songTitle = singleInfo.title.substr(0,20) + "..."
+		var songTitle = singleInfo.title.substr(0,15) + "..."
 		var artwork = singleInfo.artwork_url
 		var favCount = singleInfo.favoritings_count
 		var playCount = singleInfo.playback_count
 		var artist = singleInfo.user.username
-		// console.log(artwork)
+		var tracks = singleInfo
 		
 		return(
 			<div className="metadata">
@@ -73,26 +92,35 @@ var SongInfo = React.createClass({
 					<p>Artist: {artist}</p>
 					<p>Favorited {favCount} times</p>
 					<p>Played {playCount} times</p>
-				</div>		
+					<SongControls tracks={tracks}/>
+				</div>
 			</div>
-
 		)
 	},
 
 	render: function(){
-		console.log(this.props.songInfo)
+		// console.log('this.props.songInfo on SongInfo component', this.props.songInfo) 
+		// console.log(this.props.songInfo)
 		var songInfoArr = this.props.songInfo,
 			self = this
 
 		return(
 			<div className="listtracks">
 				{songInfoArr.map(self._metaData)}
-			</div>
-			
+			</div>			
 		)
 	}
-
 })
+
+
+
+
+
+
+
+
+
+
 
 
 
